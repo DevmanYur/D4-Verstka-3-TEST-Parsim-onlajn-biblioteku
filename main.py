@@ -27,7 +27,20 @@ def main():
             continue
 
 
-
-
 if __name__ == '__main__':
     main()
+
+# def get():
+#     import requests
+#
+#     url = 'https://tululu.org/b1/'
+#     response = requests.get(url)
+#     response.raise_for_status()
+#
+#     soup = BeautifulSoup(response.text, 'lxml')
+#     title_tag = soup.find('h1')
+#     title_text = title_tag.text
+#
+#     y = title_text.split('::')
+#     print("Заголовок:",y[0].strip())
+#     print("Автор:", y[0].strip())
