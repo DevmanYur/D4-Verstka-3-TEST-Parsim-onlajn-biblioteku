@@ -19,7 +19,6 @@ def main():
         check_for_redirect(response)
 
         try:
-            response.raise_for_status()
             filename = name_folder + '/' + name_file + str(i) + '.txt'
             with open(filename, 'w') as file:
                 file.write(response.text)
