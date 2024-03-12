@@ -1,3 +1,5 @@
+import os
+
 import requests
 from pathlib import Path
 from requests import HTTPError
@@ -7,10 +9,11 @@ from pathvalidate import sanitize_filename
 def download_txt(url, filename, folder='books/'):
 
     Path(folder).mkdir(parents=True, exist_ok=True)
-
     response = requests.get(url)
     response.raise_for_status()
-    filename_ = f'{folder}{sanitize_filename(filename)}.txt'
+
+    way = os.path.join(folder, sanitize_filename(filename))
+    filename_ = f'{way}.txt'
     with open(filename_, 'w') as file:
         file.write(response.text)
     return filename_
