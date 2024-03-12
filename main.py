@@ -12,8 +12,10 @@ def main():
     name_file = 'id'
     Path(name_folder).mkdir(parents=True, exist_ok=True)
     for i in range(1, 11):
-        url = 'https://tululu.org/txt.php?id=' + str(i)
-        response = requests.get(url)
+
+        payload = {'id': str(i)}
+        response = requests.get('https://tululu.org/txt.php', params=payload)
+        response.raise_for_status()
         check_for_redirect(response)
 
         try:
