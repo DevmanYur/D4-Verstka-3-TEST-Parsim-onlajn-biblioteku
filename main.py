@@ -5,6 +5,7 @@ from pathlib import Path
 from requests import HTTPError
 from pathvalidate import sanitize_filename
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 
 def download_txt(url, filename, folder='books/'):
@@ -43,7 +44,11 @@ def main():
             title_text = title_tag.text
             y = title_text.split('::')
             filename = f'{i}. {y[0].strip()}'
+
+            img_tag = soup.find(class_='bookimage').find('img')['src']
+            x = urljoin('https://tululu.org/', img_tag)
             print(filename)
+            print(x)
 
 
             download_txt(url, filename)
