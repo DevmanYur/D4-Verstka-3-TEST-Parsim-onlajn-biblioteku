@@ -4,6 +4,7 @@ import requests
 from pathlib import Path
 from requests import HTTPError
 from pathvalidate import sanitize_filename
+from bs4 import BeautifulSoup
 
 
 def download_txt(url, filename, folder='books/'):
@@ -17,19 +18,6 @@ def download_txt(url, filename, folder='books/'):
         file.write(response.text)
     return filename_
 
-
-
-#
-# url = 'http://tululu.org/txt.php?id=1'
-#
-# filepath = download_txt(url, 'Алиби')
-# print(filepath)  # Выведется books/Алиби.txt
-#
-# filepath = download_txt(url, 'Али/би', folder='books/')
-# print(filepath)  # Выведется books/Алиби.txt
-#
-# filepath = download_txt(url, 'Али\\би', folder='txt/')
-# print(filepath)  # Выведется txt/Алиби.txt
 
 def check_for_redirect(response):
     if response.history!=[]:
@@ -47,30 +35,22 @@ def main():
 
             check_for_redirect(response)
 
+            url2 = f'https://tululu.org/b{i}'
+            response2 = requests.get(url2)
+            response2.raise_for_status()
+            soup = BeautifulSoup(response2.text, 'lxml')
+            title_tag = soup.find('h1')
+            title_text = title_tag.text
+            y = title_text.split('::')
+            filename = f'{i}. {y[0].strip()}'
+            print(filename)
 
 
-            filepath = download_txt(url, 'Алиби')
-            print('try', i)
+            download_txt(url, filename)
 
         except HTTPError:
-            print('except', i)
             continue
 
 
 if __name__ == '__main__':
     main()
-
-# def get():
-#
-#
-#     url = 'https://tululu.org/b1/'
-#     response = requests.get(url)
-#     response.raise_for_status()
-#
-#     soup = BeautifulSoup(response.text, 'lxml')
-#     title_tag = soup.find('h1')
-#     title_text = title_tag.text
-#
-#     y = title_text.split('::')
-#     print("Заголовок:",y[0].strip())
-#     print("Автор:", y[0].strip())
