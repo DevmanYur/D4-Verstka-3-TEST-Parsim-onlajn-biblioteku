@@ -6,6 +6,11 @@ from requests import HTTPError
 from pathvalidate import sanitize_filename
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+from urllib.parse import urlparse
+from urllib.parse import unquote
+
+def download_image (folder='images/'):
+    Path(folder).mkdir(parents=True, exist_ok=True)
 
 
 def download_txt(url, filename, folder='books/'):
@@ -50,8 +55,16 @@ def main():
             print(filename)
             print(x)
 
+            y = urlparse(x)
+            z = unquote(y)
+
+            
+
+            print(y.path)
+
 
             download_txt(url, filename)
+            download_image()
 
         except HTTPError:
             continue
