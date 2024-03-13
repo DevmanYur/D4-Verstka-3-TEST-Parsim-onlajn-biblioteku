@@ -20,9 +20,9 @@ def download_txt(url, filename, folder='books/'):
     return filename_
 
 
-def check_for_redirect(response):
+def check_for_redirect(response, number):
     if response.history!=[]:
-        print("ответ пришёл с главной")
+        print(f'{number}. Ответ пришёл с главной')
         raise HTTPError
 
 def main():
@@ -34,7 +34,7 @@ def main():
             response.raise_for_status()
             url = response.url
 
-            check_for_redirect(response)
+            check_for_redirect(response, i)
 
             url2 = f'https://tululu.org/b{i}'
             response2 = requests.get(url2)
