@@ -10,6 +10,23 @@ from urllib.parse import urlparse
 from urllib.parse import unquote
 
 
+def download_comments(url, filename):
+    url = 'https://tululu.org/b5'
+    filename = 'kg'
+
+    # Ссылка на страницу
+    response = requests.get(url)
+    response.raise_for_status()
+
+    # Суп страницы
+    soup = BeautifulSoup(response.text, 'lxml')
+
+    # Ищем комментарий и вычисляем к ней путь
+    image_comm = soup.find_all(class_='texts')
+    for x in image_comm:
+        print(x.find(class_='black').text)
+
+
 def download_image(url, filename, folder='images/'):
 
 
