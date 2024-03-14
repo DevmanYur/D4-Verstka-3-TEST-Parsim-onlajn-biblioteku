@@ -10,10 +10,7 @@ from urllib.parse import urlparse
 from urllib.parse import unquote
 
 
-def download_comments(url, filename):
-    url = 'https://tululu.org/b5'
-    filename = 'kg'
-
+def download_comments(url):
     # Ссылка на страницу
     response = requests.get(url)
     response.raise_for_status()
@@ -22,8 +19,8 @@ def download_comments(url, filename):
     soup = BeautifulSoup(response.text, 'lxml')
 
     # Ищем комментарий и вычисляем к ней путь
-    image_comm = soup.find_all(class_='texts')
-    for x in image_comm:
+    comm_tag = soup.find_all(class_='texts')
+    for x in comm_tag:
         print(x.find(class_='black').text)
 
 
@@ -98,6 +95,10 @@ def main():
 
 
             download_image(response2.url, str(i))
+
+            download_comments(response2.url)
+
+
 
             image_tag = soup.find(class_='bookimage').find('img')['src']
             image_way = urljoin('https://tululu.org/', image_tag)
