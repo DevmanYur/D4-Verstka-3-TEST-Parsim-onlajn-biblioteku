@@ -10,6 +10,23 @@ from urllib.parse import urlparse
 from urllib.parse import unquote
 
 
+
+
+
+def download_genre(url):
+    url = 'https://tululu.org/b5'
+
+
+    response = requests.get(url)
+    response.raise_for_status()
+
+    soup = BeautifulSoup(response.text, 'lxml')
+    comm = soup.find('span', class_='d_book').find_all('a')
+    for x in comm:
+        print(x.text)
+
+
+
 def download_comments(url):
     # Ссылка на страницу
     response = requests.get(url)
