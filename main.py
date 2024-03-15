@@ -70,17 +70,16 @@ from urllib.parse import unquote
 #         file.write(response.content)
 #
 #
-# def download_txt(url, filename, folder='books/'):
-#
-#     Path(folder).mkdir(parents=True, exist_ok=True)
-#     response = requests.get(url)
-#     response.raise_for_status()
-#     way = os.path.join(folder, sanitize_filename(filename))
-#     filename_ = f'{way}.txt'
-#     with open(filename_, 'w') as file:
-#         file.write(response.text)
-#     print(filename_)
-#     return filename_
+def download_txt(url, filename, folder='books/'):
+
+    Path(folder).mkdir(parents=True, exist_ok=True)
+    response = requests.get(url)
+    response.raise_for_status()
+    way = os.path.join(folder, sanitize_filename(str(filename)))
+    way_filename = f'{way}.txt'
+    with open(way_filename, 'w') as file:
+        file.write(response.text)
+    return way_filename
 
 
 
@@ -118,11 +117,11 @@ def main():
     url = 'https://tululu.org/'
     list = [5]
 
-    for i in list:
+    for filename in list:
         try:
 
             # Страница загрузки txt файла
-            payload = {'id': str(i)}
+            payload = {'id': str(filename)}
             response = requests.get(f'{url}txt.php', params=payload)
             response.raise_for_status()
             print(response.url)
@@ -131,12 +130,14 @@ def main():
             check_for_redirect(response)
 
             # Страница книги xml
-            response_book_page = requests.get(f'{url}b{i}')
+            response_book_page = requests.get(f'{url}b{filename}')
             response_book_page.raise_for_status()
             soup = BeautifulSoup(response_book_page.text, 'lxml')
 
             # Запуск функции на парсинг
             parse_book_page(soup)
+
+            download_txt(url, filename, folder='books/')
 
 
 
