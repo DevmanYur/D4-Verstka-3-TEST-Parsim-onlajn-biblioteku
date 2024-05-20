@@ -67,6 +67,18 @@ def f1 ():
                 response_image.raise_for_status()
 
                 # Комментарии
+                comments_tag = soup.find_all(class_='texts')
+                comments = []
+                for comment in comments_tag:
+                    comments.append(comment.find(class_='black').text)
+
+
+                # Жанр
+                genre_tag = soup.find('span', class_='d_book').find_all('a')
+                genres = []
+                for genre in genre_tag:
+                    genres.append(genre.text)
+
 
 
 
@@ -80,6 +92,8 @@ def f1 ():
                 print('тег картинка :', tag_image)
                 name_image = tag_image.split('/')[-1]
                 print(name_image)
+                print('комментарии :', comments)
+                print('жанр :', genres)
                 print()
 
 
