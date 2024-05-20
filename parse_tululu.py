@@ -76,25 +76,7 @@ def f1 ():
                 print(name_image)
                 print()
 
-                #
-                # foldername = os.path.join(folder, filename)
-                # filename_path = f'{foldername}.txt'
-                # with open(filename_path, 'w') as file:
-                #     file.write(response_txt.text)
 
-                #
-                #
-                # image_tag = soup.find(class_='bookimage').find('img')['src']
-                # image = os.path.join('https://tululu.org/', image_tag)
-                # print(image)
-
-
-
-                # foldername = os.path.join('books2/', sanitize_filename(str(x)))
-                # filename_ = f'{foldername}.jpg'
-                # with open(filename_, 'wb') as file:
-                #     file.write(response_image.content)
-                #
                 x = os.path.join(folder, name_file)
                 y = f'{x}.txt'
                 with open(y, 'w') as file:
