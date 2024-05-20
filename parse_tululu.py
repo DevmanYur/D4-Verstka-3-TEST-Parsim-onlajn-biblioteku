@@ -1,10 +1,13 @@
 import os
+import urllib
 from pprint import pprint
 from requests import HTTPError
 from pathlib import Path
 from pathvalidate import sanitize_filename
 from bs4 import BeautifulSoup
 from pathvalidate import sanitize_filename
+from os.path import splitext
+from urllib.parse import urlparse
 
 import requests
 
@@ -22,6 +25,7 @@ import requests
 #
 #
 
+
 def f1 ():
 
         for x in range(10):
@@ -33,34 +37,67 @@ def f1 ():
                 folder = 'books/'
                 Path(folder).mkdir(parents=True, exist_ok=True)
 
-                url_txt = "https://tululu.org/txt.php"
-                payload_txt = {'id': x+1}
-                response_txt = requests.get(url_txt, params=payload_txt)
-                response_txt.raise_for_status()
-                print(response_txt.url)
-                check_for_redirect(response_txt)
+                # url_txt = "https://tululu.org/txt.php"
+                # payload_txt = {'id': x+1}
+                # response_txt = requests.get(url_txt, params=payload_txt)
+                # response_txt.raise_for_status()
+                # check_for_redirect(response_txt)
 
 
-                url_page = f"https://tululu.org/b{x+1}/"
-                response_page = requests.get(url_page)
+
+                url = f"https://tululu.org"
+                response_page = requests.get(f'{url}/b{x+1}/')
                 response_page.raise_for_status()
-                print(response_page.url)
-                soup = BeautifulSoup(response_page.text, 'lxml')
-                title_tag = soup.find('h1')
-                tittle, author = soup.find('h1').text.split('::')
+                check_for_redirect(response_page)
 
+
+                soup = BeautifulSoup(response_page.text, 'lxml')
+
+                tittle, author = soup.find('h1').text.split('::')
                 sanitize_tittle = sanitize_filename(tittle.strip())
-                print(sanitize_tittle)
+
+                tag_image = soup.find(class_='bookimage').find('img')['src']
+                url_image = f'{url}{tag_image}'
+                response_image = requests.get(url_image)
+                response_image.raise_for_status()
+
+
+
 
                 filename = f'{x+1}. {sanitize_tittle}'
                 print(filename)
+                print('страница :', response_page.url)
+                print('картинка :', url_image)
+                print('тег картинка :', tag_image)
+                print('urlsplit :', urllib.parse.unquote(tag_image))
+                print(tag_image.split('/')[-1])
+
+
+                print()
+
+                #
+                # foldername = os.path.join(folder, filename)
+                # filename_path = f'{foldername}.txt'
+                # with open(filename_path, 'w') as file:
+                #     file.write(response_txt.text)
+
+                #
+                #
+                # image_tag = soup.find(class_='bookimage').find('img')['src']
+                # image = os.path.join('https://tululu.org/', image_tag)
+                # print(image)
 
 
 
-                foldername = os.path.join(folder, filename)
-                filename_path = f'{foldername}.txt'
-                with open(filename_path, 'w') as file:
-                    file.write(response_txt.text)
+                # foldername = os.path.join('books2/', sanitize_filename(str(x)))
+                # filename_ = f'{foldername}.jpg'
+                # with open(filename_, 'wb') as file:
+                #     file.write(response_image.content)
+                #
+                # foldername = os.path.join(folder, filename)
+                # filename_path = f'{foldername}.'
+                # # with open(filename_path, 'w') as file:
+                # #     file.write(response_txt.text)
 
 
 
@@ -79,6 +116,7 @@ def f1 ():
 
 def check_for_redirect(response):
             if response.history:
+                print("Ссылка не действительна")
                 raise HTTPError
 
 
