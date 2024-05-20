@@ -32,20 +32,22 @@ def f1 ():
             try:
                 #шаг 8
 
+                url = f"https://tululu.org"
+
 
 
                 folder = 'books/'
                 Path(folder).mkdir(parents=True, exist_ok=True)
 
-                # url_txt = "https://tululu.org/txt.php"
-                # payload_txt = {'id': x+1}
-                # response_txt = requests.get(url_txt, params=payload_txt)
-                # response_txt.raise_for_status()
-                # check_for_redirect(response_txt)
+                url_txt = f"{url}/txt.php"
+                payload_txt = {'id': x+1}
+                response_txt = requests.get(url_txt, params=payload_txt)
+                response_txt.raise_for_status()
+                check_for_redirect(response_txt)
 
 
 
-                url = f"https://tululu.org"
+
                 response_page = requests.get(f'{url}/b{x+1}/')
                 response_page.raise_for_status()
                 check_for_redirect(response_page)
@@ -64,15 +66,14 @@ def f1 ():
 
 
 
-                filename = f'{x+1}. {sanitize_tittle}'
-                print(filename)
+
+                name_file = f'{x+1}. {sanitize_tittle}'
+                print(name_file)
                 print('страница :', response_page.url)
                 print('картинка :', url_image)
                 print('тег картинка :', tag_image)
-                print('urlsplit :', urllib.parse.unquote(tag_image))
-                print(tag_image.split('/')[-1])
-
-
+                name_image = tag_image.split('/')[-1]
+                print(name_image)
                 print()
 
                 #
@@ -94,10 +95,16 @@ def f1 ():
                 # with open(filename_, 'wb') as file:
                 #     file.write(response_image.content)
                 #
-                # foldername = os.path.join(folder, filename)
-                # filename_path = f'{foldername}.'
-                # # with open(filename_path, 'w') as file:
-                # #     file.write(response_txt.text)
+                x = os.path.join(folder, name_file)
+                y = f'{x}.txt'
+                with open(y, 'w') as file:
+                     file.write(response_txt.text)
+
+                z = os.path.join(folder, name_image)
+                q = f'{z}'
+                with open(q, 'wb') as file2:
+                    file2.write(response_image.content)
+
 
 
 
