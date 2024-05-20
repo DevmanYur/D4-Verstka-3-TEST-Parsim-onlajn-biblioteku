@@ -39,29 +39,35 @@ def f1 ():
                 folder = 'books/'
                 Path(folder).mkdir(parents=True, exist_ok=True)
 
+                # Текст
                 url_txt = f"{url}/txt.php"
                 payload_txt = {'id': x+1}
                 response_txt = requests.get(url_txt, params=payload_txt)
                 response_txt.raise_for_status()
                 check_for_redirect(response_txt)
 
-
-
-
+                # Страница
                 response_page = requests.get(f'{url}/b{x+1}/')
                 response_page.raise_for_status()
                 check_for_redirect(response_page)
 
-
+                # Суп страницы
                 soup = BeautifulSoup(response_page.text, 'lxml')
 
+
+                # Заголовок
                 tittle, author = soup.find('h1').text.split('::')
                 sanitize_tittle = sanitize_filename(tittle.strip())
 
+
+                # Картинка
                 tag_image = soup.find(class_='bookimage').find('img')['src']
                 url_image = f'{url}{tag_image}'
                 response_image = requests.get(url_image)
                 response_image.raise_for_status()
+
+                # Комментарии
+
 
 
 
