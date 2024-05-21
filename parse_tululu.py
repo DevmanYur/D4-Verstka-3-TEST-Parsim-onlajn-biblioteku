@@ -117,6 +117,11 @@ def f1 ():
 
 
 
+                filepath = download_txt(response_txt, name_file, folder='books2/')
+                print(filepath)  # Выведется books/Алиби.txt
+
+
+
 
 
         except HTTPError:
@@ -137,28 +142,16 @@ def check_for_redirect(response):
                 raise HTTPError
 
 
+
+
+def download_txt(url, filename, folder='books/'):
+    folder_for_books = folder
+    Path(folder_for_books).mkdir(parents=True, exist_ok=True)
+    filepath_without_format = os.path.join(folder_for_books, sanitize_filename(filename))
+    filepath = f'{filepath_without_format}.txt'
+    with open(filepath, 'w') as file:
+        file.write(url.text)
+    return filepath
+
 f1 ()
-
-
-    # text = response.text
-    #
-    #
-    # filename = f'{x+1}.txt'
-    # with open(filename, 'w') as file:
-    #     file.write(text)
-    #
-    #
-    #     def check_for_redirect(response):
-    #         if response.history:
-    #             print('Ответ пришел с главной страницы')
-    #             raise HTTPError
-
-
-# def download_txt(response, filename, folder='books/'):
-#     Path(folder).mkdir(parents=True, exist_ok=True)
-#     foldername = os.path.join(folder, sanitize_filename(str(filename)))
-#     filename_path = f'{foldername}.txt'
-#     with open(filename_path, 'w') as file:
-#         file.write(response.text)
-
 
