@@ -51,6 +51,7 @@ def f1 ():
                 # Суп страницы
                 soup = BeautifulSoup(response_page.text, 'lxml')
                 tittle, author, comments, genres, image, image_tag = parse_book_page(soup)
+                print(parse_book_page(soup))
 
 
                 url_image = f'{url}{image_tag}'
@@ -72,7 +73,7 @@ def f1 ():
 
 
         except HTTPError:
-            print('continue')
+
             continue
 
 
@@ -85,7 +86,7 @@ def f1 ():
 
 def check_for_redirect(response):
             if response.history:
-                print("Ссылка не действительна")
+
                 raise HTTPError
 
 
@@ -115,8 +116,9 @@ def download_comments(comments, filename, folder='comments/'):
 
 def parse_book_page(soup):
     # Заголовок
-    tittle2, author = soup.find('h1').text.split('::')
+    tittle2, author2 = soup.find('h1').text.split('::')
     tittle = sanitize_filename(tittle2.strip())
+    author = sanitize_filename(author2.strip())
 
     # Комментарии
     comments_tag = soup.find_all(class_='texts')
