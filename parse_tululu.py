@@ -28,8 +28,7 @@ import requests
 
 def f1 ():
     url = f"https://tululu.org"
-    folder = 'books/'
-    Path(folder).mkdir(parents=True, exist_ok=True)
+
     for x in range(10):
         try:
                 #шаг 8
