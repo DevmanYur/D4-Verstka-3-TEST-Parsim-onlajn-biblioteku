@@ -117,10 +117,11 @@ def f1 ():
 
 
 
-                filepath = download_txt(response_txt, name_file, folder='books2/')
+                filepath = download_txt(response_txt, name_file)
                 print(filepath)  # Выведется books/Алиби.txt
 
-                download_images(response_image, name_image, folder='images/')
+                filepath2 = download_images(response_image, name_image)
+                print(filepath2)
 
 
 
