@@ -120,6 +120,8 @@ def f1 ():
                 filepath = download_txt(response_txt, name_file, folder='books2/')
                 print(filepath)  # Выведется books/Алиби.txt
 
+                download_images(response_image, name_image, folder='images/')
+
 
 
 
@@ -145,12 +147,18 @@ def check_for_redirect(response):
 
 
 def download_txt(url, filename, folder='books/'):
-    folder_for_books = folder
-    Path(folder_for_books).mkdir(parents=True, exist_ok=True)
-    filepath_without_format = os.path.join(folder_for_books, sanitize_filename(filename))
+    Path(folder).mkdir(parents=True, exist_ok=True)
+    filepath_without_format = os.path.join(folder, sanitize_filename(filename))
     filepath = f'{filepath_without_format}.txt'
     with open(filepath, 'w') as file:
         file.write(url.text)
+    return filepath
+
+def download_images(url, filename, folder='images/'):
+    Path(folder).mkdir(parents=True, exist_ok=True)
+    filepath = os.path.join(folder, sanitize_filename(filename))
+    with open(filepath, 'wb') as file:
+        file.write(url.content)
     return filepath
 
 f1 ()
