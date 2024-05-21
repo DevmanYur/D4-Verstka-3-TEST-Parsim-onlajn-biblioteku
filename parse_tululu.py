@@ -27,17 +27,14 @@ import requests
 
 
 def f1 ():
-
-        for x in range(10):
-            try:
+    url = f"https://tululu.org"
+    folder = 'books/'
+    Path(folder).mkdir(parents=True, exist_ok=True)
+    for x in range(10):
+        try:
                 #шаг 8
 
-                url = f"https://tululu.org"
 
-
-
-                folder = 'books/'
-                Path(folder).mkdir(parents=True, exist_ok=True)
 
                 # Текст
                 url_txt = f"{url}/txt.php"
@@ -96,24 +93,35 @@ def f1 ():
                 print('жанр :', genres)
                 print()
 
-
-                x = os.path.join(folder, name_file)
+                folder_for_books = 'books'
+                Path(folder_for_books).mkdir(parents=True, exist_ok=True)
+                x = os.path.join(folder_for_books, name_file)
                 y = f'{x}.txt'
                 with open(y, 'w') as file:
                      file.write(response_txt.text)
 
-                z = os.path.join(folder, name_image)
+
+                folder_for_images = 'images'
+                Path(folder_for_images).mkdir(parents=True, exist_ok=True)
+                z = os.path.join('images', name_image)
                 q = f'{z}'
                 with open(q, 'wb') as file2:
                     file2.write(response_image.content)
 
+                folder_for_comments = 'comments'
+                Path(folder_for_comments).mkdir(parents=True, exist_ok=True)
+                r = os.path.join(folder_for_comments, f'{name_file} - комментарий')
+                v = f'{r}.txt'
+                with open(v, 'w') as file:
+                    comments
 
 
 
 
-            except HTTPError:
-                print('continue')
-                continue
+
+        except HTTPError:
+            print('continue')
+            continue
 
 
 
