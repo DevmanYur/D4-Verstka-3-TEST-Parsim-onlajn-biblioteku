@@ -1,15 +1,13 @@
 import os
-import urllib
-from pprint import pprint
-from requests import HTTPError
-from pathlib import Path
-from pathvalidate import sanitize_filename
-from bs4 import BeautifulSoup
-from pathvalidate import sanitize_filename
-from os.path import splitext
-from urllib.parse import urlparse
+import argparse
 
 import requests
+from pathlib import Path
+from requests import HTTPError
+from pathvalidate import sanitize_filename
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin
+from urllib.parse import urlparse
 
 
 # url = "https://tululu.org/txt.php?id=32168"
@@ -26,10 +24,10 @@ import requests
 #
 
 
-def f1 ():
-    url = f"https://tululu.org"
+def f1 (url, start_id, end_id):
 
-    for x in range(10):
+
+    for page in range(start_id, end_id):
         try:
                 #шаг 8
 
@@ -37,13 +35,13 @@ def f1 ():
 
                 # Текст
                 url_txt = f"{url}/txt.php"
-                payload_txt = {'id': x+1}
+                payload_txt = {'id': page+1}
                 response_txt = requests.get(url_txt, params=payload_txt)
                 response_txt.raise_for_status()
                 check_for_redirect(response_txt)
 
                 # Страница
-                response_page = requests.get(f'{url}/b{x+1}/')
+                response_page = requests.get(f'{url}/b{page+1}/')
                 response_page.raise_for_status()
                 check_for_redirect(response_page)
 
@@ -63,9 +61,9 @@ def f1 ():
 
 
 
-                download_txt(response_txt, f'{x+1}. {tittle}')
+                download_txt(response_txt, f'{page+1}. {tittle}')
                 download_images(response_image, image)
-                download_comments(comments, f'{x+1}. {tittle} - комментарии')
+                download_comments(comments, f'{page+1}. {tittle} - комментарии')
 
 
 
@@ -140,5 +138,28 @@ def parse_book_page(soup):
 
 
 
-f1 ()
+def main():
+    parser = argparse.ArgumentParser(
+        description='Скачивание заданных страниц'
+    )
+    parser.add_argument('start_id', help='Страница с', type=int)
+    parser.add_argument('end_id', help='Страница по', type=int)
+    args = parser.parse_args()
+
+
+
+
+    url = f"https://tululu.org"
+    f1(url, args.start_id, args.end_id + 1)
+
+
+
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+
 
