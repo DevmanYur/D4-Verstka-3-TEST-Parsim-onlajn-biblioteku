@@ -10,38 +10,19 @@ from urllib.parse import urljoin
 from urllib.parse import urlparse
 
 
-# url = "https://tululu.org/txt.php?id=32168"
-#
-# response = requests.get(url)
-# response.raise_for_status()
-# text = response.text
-#
-#
-# filename = 'text.txt'
-# with open(filename, 'w') as file:
-#     file.write(text)
-#
-#
 
 
-def f1 (url, start_id, end_id):
 
-
-    for page in range(start_id, end_id):
+def f1(url, page):
         try:
-                #шаг 8
-
-
-
-                # Текст
                 url_txt = f"{url}/txt.php"
-                payload_txt = {'id': page+1}
+                payload_txt = {'id': page}
                 response_txt = requests.get(url_txt, params=payload_txt)
                 response_txt.raise_for_status()
                 check_for_redirect(response_txt)
 
                 # Страница
-                response_page = requests.get(f'{url}/b{page+1}/')
+                response_page = requests.get(f'{url}/b{page}/')
                 response_page.raise_for_status()
                 check_for_redirect(response_page)
 
@@ -61,9 +42,9 @@ def f1 (url, start_id, end_id):
 
 
 
-                download_txt(response_txt, f'{page+1}. {tittle}')
+                download_txt(response_txt, f'{page}. {tittle}')
                 download_images(response_image, image)
-                download_comments(comments, f'{page+1}. {tittle} - комментарии')
+                download_comments(comments, f'{page}. {tittle} - комментарии')
 
 
 
@@ -150,7 +131,12 @@ def main():
 
 
     url = f"https://tululu.org"
-    f1(url, args.start_id, args.end_id + 1)
+
+    for page in range(args.start_id, args.end_id + 1):
+        try:
+            f1(url, page)
+        except HTTPError:
+            continue
 
 
 
