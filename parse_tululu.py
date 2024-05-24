@@ -46,7 +46,7 @@ def download_txt(url, filename, folder='books/'):
     filepath = f'{filepath_without_format}.txt'
     with open(filepath, 'w') as file:
         file.write(url.text)
-
+        
     return filepath
 
 
