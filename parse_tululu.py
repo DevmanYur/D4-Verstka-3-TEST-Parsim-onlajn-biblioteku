@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 
 
 def f1(url, page):
-        try:
+
                 url_txt = f"{url}/txt.php"
                 payload_txt = {'id': page}
                 response_txt = requests.get(url_txt, params=payload_txt)
@@ -46,13 +46,6 @@ def f1(url, page):
                 download_images(response_image, image)
                 download_comments(comments, f'{page}. {tittle} - комментарии')
 
-
-
-
-
-        except HTTPError:
-
-            continue
 
 
 
@@ -100,15 +93,12 @@ def parse_book_page(soup):
 
     # Комментарии
     comments_tag = soup.find_all(class_='texts')
-    comments = []
-    for comment in comments_tag:
-        comments.append(comment.find(class_='black').text)
+    comments = [comment.find(class_='black').text for comment in comments_tag]
 
     # Жанр
     genre_tag = soup.find('span', class_='d_book').find_all('a')
-    genres = []
-    for genre in genre_tag:
-        genres.append(genre.text)
+    genres = [genre.text for genre in genre_tag]
+
 
     # Картинка
     image_tag = soup.find(class_='bookimage').find('img')['src']
